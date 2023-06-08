@@ -1,6 +1,13 @@
+require_relative '../models/author.rb'
+require_relative '../models/book.rb'
+
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
   
+
+  get '/' do
+    "Welcome to the e-book library system!" # You can replace this with your desired content or render a view template
+  end
   get '/books' do
     books = Book.all
     books.to_json(include: :author)
