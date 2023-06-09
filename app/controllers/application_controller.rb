@@ -1,24 +1,33 @@
 require_relative '../models/author.rb'
 require_relative '../models/book.rb'
+require_relative '../models/user.rb'
 
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
   
-
-  get '/' do
-    "Welcome to the e-book library system!" # You can replace this with your desired content or render a view template
-  end
   get '/books' do
     books = Book.all
     books.to_json(include: :author)
   end
   get '/authors' do
-    books = Author.all
-    books.to_json
+    authors = Author.all
+    authors.to_json
+    
   end
-  get '/authors' do
-    books = Author.all
-    books.to_json
+
+  get '/users' do
+    users = User.all
+    users.to_json
+  end
+
+
+  post '/login' do
+    user = User.find_by(email: params[:email])
+    if user
+      user.to_json
+    else
+      { message: "This user does not exist."}.to_json
+    end
   end
 
   get '/books/:id' do
@@ -37,6 +46,17 @@ class ApplicationController < Sinatra::Base
        
     )
     books.to_json
+  end
+
+  post '/signin' do
+    user = User.create(
+        name: params[:name],
+       user_id: params[:user_id], 
+        email: params[:email],
+        password: params[:password],
+       
+    )
+    user.to_json
   end
 
   patch '/books/:id' do

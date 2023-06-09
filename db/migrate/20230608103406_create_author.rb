@@ -5,3 +5,4 @@ class CreateAuthor < ActiveRecord::Migration[6.1]
       t.integer :author_id
   end
 end
+end
